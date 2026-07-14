@@ -143,7 +143,7 @@
     document.body.appendChild(pill);
     pill.querySelector(".resume-go").addEventListener("click", function () {
       var el = document.querySelector('#reader .para[data-idx="' + saved + '"]');
-      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 100, behavior: "smooth" });
+      if (el) window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 100);
       hide();
     });
     pill.querySelector(".resume-x").addEventListener("click", hide);
