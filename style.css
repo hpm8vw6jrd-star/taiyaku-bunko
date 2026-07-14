@@ -97,6 +97,9 @@ a.brand:hover{text-decoration:none;opacity:.75}
 .ctl-btn{border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
   width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:1rem;line-height:1}
 .ctl-btn:hover{border-color:var(--accent-2);color:var(--accent)}
+.dl-btn{border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
+  border-radius:8px;padding:.34rem .7rem;font-family:inherit;font-size:.82rem;cursor:pointer;white-space:nowrap}
+.dl-btn:hover{border-color:var(--accent-2);color:var(--accent)}
 .chapnav{display:inline-flex;gap:.3rem;margin-left:auto;flex-wrap:wrap}
 .chapnav a{font-size:.82rem;color:var(--ink-soft);border:1px solid var(--line);
   border-radius:8px;padding:.28rem .6rem;background:var(--card)}
@@ -113,21 +116,12 @@ main.reader{max-width:var(--maxw);margin:0 auto;padding:1.5rem 1.4rem 5rem}
 
 .para{display:grid;gap:1.6rem 2.4rem;padding:.55rem 0;align-items:start}
 .para + .para{border-top:1px solid rgba(224,214,194,.5)}
-.col{display:none}
-.para .ja{font-family:var(--serif-ja);color:var(--ink)}
-.para .en{font-family:var(--serif-en);color:var(--en);font-size:.95em;line-height:1.75}
-.para .de{font-family:var(--serif-en);color:var(--ink-soft);font-size:.97em;line-height:1.8}
-
-/* 対訳: 日本語 + 原文(ドイツ語) */
-body.view-both .para{grid-template-columns:1fr 1fr}
-body.view-both .ja,
-body.view-both .de{display:block}
-/* 単一言語表示 */
-body.view-ja .para,body.view-en .para,body.view-de .para{grid-template-columns:1fr}
-body.view-ja .ja{display:block}
-body.view-en .en{display:block}
-body.view-de .de{display:block}
-body.view-ja main.reader,body.view-en main.reader,body.view-de main.reader{max-width:44rem}
+#reader .col{display:none}
+.para .lang-ja{font-family:var(--serif-ja);color:var(--ink)}
+.para .col:not(.lang-ja){font-family:var(--serif-en);color:var(--en);font-size:.96em;line-height:1.78}
+.para .lang-de{color:var(--ink-soft)}
+/* grid-template-columns と各言語の表示/非表示は reader.js が動的に注入 */
+body.solo main.reader{max-width:44rem}
 
 /* font scale hook */
 body[data-fs="s"]{font-size:16px}
@@ -145,8 +139,8 @@ body[data-fs="xl"]{font-size:22px}
 
 @media (max-width:760px){
   body{font-size:17px}
-  body.view-both .para{grid-template-columns:1fr;gap:.5rem}
-  body.view-both .de{padding-top:.4rem;border-top:1px dotted var(--line)}
+  #reader .para{grid-template-columns:1fr !important;gap:.5rem}
+  body:not(.solo) .para .col:not(.lang-ja){padding-top:.4rem;border-top:1px dotted var(--line)}
   .work-head h1{font-size:2.2rem}
   .hero h1{font-size:2.1rem}
   .controls{top:46px}
