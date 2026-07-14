@@ -43,6 +43,8 @@ a:hover{text-decoration:underline}
 }
 .brand{font-weight:600;letter-spacing:.06em;color:var(--ink);font-size:1.02rem;white-space:nowrap}
 .brand small{color:var(--ink-faint);font-weight:400;letter-spacing:.12em;margin-left:.5rem;font-size:.72rem}
+a.brand{cursor:pointer}
+a.brand:hover{text-decoration:none;opacity:.75}
 .topbar .spacer{flex:1}
 .backlink{font-size:.9rem;color:var(--ink-soft)}
 
@@ -109,20 +111,23 @@ main.reader{max-width:var(--maxw);margin:0 auto;padding:1.5rem 1.4rem 5rem}
   font-size:.85rem;color:var(--ink-faint);margin-bottom:.2rem}
 .chapter-rule{width:40px;height:1px;background:var(--accent-2);margin:.6rem auto 2rem;opacity:.6}
 
-.para{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem 2.4rem;
-  padding:.55rem 0;align-items:start}
+.para{display:grid;gap:1.6rem 2.4rem;padding:.55rem 0;align-items:start}
 .para + .para{border-top:1px solid rgba(224,214,194,.5)}
+.col{display:none}
 .para .ja{font-family:var(--serif-ja);color:var(--ink)}
 .para .en{font-family:var(--serif-en);color:var(--en);font-size:.95em;line-height:1.75}
-.para .ja::first-letter{}
+.para .de{font-family:var(--serif-en);color:var(--ink-soft);font-size:.97em;line-height:1.8}
 
-/* view modes */
-body.view-ja .para{grid-template-columns:1fr}
-body.view-ja .en{display:none}
-body.view-en .para{grid-template-columns:1fr}
-body.view-en .ja{display:none}
-body.view-ja main.reader,body.view-en main.reader{max-width:44rem}
-body.view-ja .chapter,body.view-en .chapter{}
+/* 対訳: 日本語 + 原文(ドイツ語) */
+body.view-both .para{grid-template-columns:1fr 1fr}
+body.view-both .ja,
+body.view-both .de{display:block}
+/* 単一言語表示 */
+body.view-ja .para,body.view-en .para,body.view-de .para{grid-template-columns:1fr}
+body.view-ja .ja{display:block}
+body.view-en .en{display:block}
+body.view-de .de{display:block}
+body.view-ja main.reader,body.view-en main.reader,body.view-de main.reader{max-width:44rem}
 
 /* font scale hook */
 body[data-fs="s"]{font-size:16px}
@@ -140,8 +145,8 @@ body[data-fs="xl"]{font-size:22px}
 
 @media (max-width:760px){
   body{font-size:17px}
-  .para{grid-template-columns:1fr;gap:.5rem}
-  .para .en{padding-top:.4rem;border-top:1px dotted var(--line)}
+  body.view-both .para{grid-template-columns:1fr;gap:.5rem}
+  body.view-both .de{padding-top:.4rem;border-top:1px dotted var(--line)}
   .work-head h1{font-size:2.2rem}
   .hero h1{font-size:2.1rem}
   .controls{top:46px}

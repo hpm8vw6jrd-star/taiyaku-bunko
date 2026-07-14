@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hpm8vw6jrd-star.github.io/taiyaku-bunko/sitemap.xml

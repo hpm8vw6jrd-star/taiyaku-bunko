@@ -1,4 +1,4 @@
-/* 対訳リーダー — renders window.BOOK into the page */
+/* 対訳リーダー — renders window.BOOK into the page (日本語 / 英語 / 原文ドイツ語) */
 (function () {
   var B = window.BOOK;
   if (!B) { document.body.innerHTML = "<p style='padding:2rem'>データを読み込めませんでした。</p>"; return; }
@@ -7,17 +7,19 @@
 
   // ---- header ----
   var head = document.getElementById("work-head");
+  var creditLines = (B.sources || []).map(function (s) {
+    return esc(s.label) + ": " + esc(s.who) +
+      '（<a href="' + s.url + '" target="_blank" rel="noopener">' + esc(s.via) + '</a>）';
+  });
+  creditLines.push("日本語訳: 本サイト（AIの支援により作成）");
   head.innerHTML =
     '<div class="eyebrow">' + esc(B.originalTitle) + " &nbsp;·&nbsp; " + esc(B.englishTitle) + '</div>' +
     '<h1>' + esc(B.title) + '</h1>' +
     '<div class="author">' + esc(B.author) + '</div>' +
-    '<div class="credit">英訳: ' + esc(B.engTranslator) +
-      '（<a href="' + B.sourceUrl + '" target="_blank" rel="noopener">' + esc(B.source) + '</a>／パブリックドメイン）<br>' +
-      '日本語訳: 本サイト（AIの支援により作成）</div>';
+    '<div class="credit">' + creditLines.join("<br>") + '</div>';
 
   // ---- chapter nav ----
-  var nav = document.getElementById("chapnav");
-  nav.innerHTML = B.parts.map(function (p, i) {
+  document.getElementById("chapnav").innerHTML = B.parts.map(function (p, i) {
     return '<a href="#ch' + i + '">' + esc(p.label) + '</a>';
   }).join("");
 
@@ -30,8 +32,9 @@
     html += '<div class="chapter-rule"></div>';
     p.paras.forEach(function (pr) {
       html += '<div class="para">' +
-        '<div class="ja">' + esc(pr.ja) + '</div>' +
-        '<div class="en">' + esc(pr.en) + '</div>' +
+        '<div class="col ja" lang="ja">' + esc(pr.ja) + '</div>' +
+        '<div class="col de" lang="de">' + esc(pr.de) + '</div>' +
+        '<div class="col en" lang="en">' + esc(pr.en) + '</div>' +
         '</div>';
     });
     html += '</section>';
@@ -39,15 +42,15 @@
   main.innerHTML = html;
 
   // ---- view mode ----
-  var VIEWS = ["both", "ja", "en"];
-  var saved = safeGet("tb-view") || "both";
-  setView(saved);
+  // both = 日本語 + 原文(独) 対訳 ; ja / en / de = 単一言語
+  var VIEWS = ["both", "ja", "en", "de"];
+  setView(safeGet("tb-view") || "both");
   document.querySelectorAll("[data-view]").forEach(function (btn) {
     btn.addEventListener("click", function () { setView(btn.getAttribute("data-view")); });
   });
   function setView(v) {
     if (VIEWS.indexOf(v) < 0) v = "both";
-    document.body.classList.remove("view-both", "view-ja", "view-en");
+    document.body.classList.remove("view-both", "view-ja", "view-en", "view-de");
     document.body.classList.add("view-" + v);
     document.querySelectorAll("[data-view]").forEach(function (btn) {
       btn.classList.toggle("active", btn.getAttribute("data-view") === v);
