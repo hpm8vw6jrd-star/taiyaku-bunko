@@ -134,6 +134,20 @@
     }, 500);
   }, { passive: true });
 
+  // ---- 操作バーの表示制御（下スクロールで隠す・上スクロール/先頭で表示） ----
+  var lastY = window.scrollY, ticking = false;
+  window.addEventListener("scroll", function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var y = window.scrollY;
+      if (y <= 80 || y < lastY - 4) document.body.classList.remove("bar-hidden");
+      else if (y > lastY + 6) document.body.classList.add("bar-hidden");
+      lastY = y;
+      ticking = false;
+    });
+  }, { passive: true });
+
   (function initBookmark() {
     var saved = parseInt(safeGet(POS) || "0", 10);
     if (!saved || saved < 2) return;
