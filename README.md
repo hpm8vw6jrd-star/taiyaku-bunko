@@ -3,20 +3,25 @@
 著作権の切れた海外の古典を、**原文と新しい日本語訳の対訳**で無料公開する静的サイトです。
 
 ## 収録作品
-- フランツ・カフカ『変身』（英訳: David Wyllie / [Project Gutenberg #5200](https://www.gutenberg.org/ebooks/5200)、パブリックドメイン）
-  - 全3章・97段落を、原文と日本語訳で段落ごとに対応表示
+- フランツ・カフカ『変身』
+- シャーロット・パーキンス・ギルマン『黄色い壁紙』
+- W・W・ジェイコブズ『猿の手』
+- トマス・ペイン『コモン・センス』
+- ケイト・ショパン『デジレの赤ちゃん』
+- ジェイムズ・ジョイス『アラビー』
+- ケイト・ショパン『一時間の物語』
 
 ## 構成
 ```
 taiyaku-bunko/
 ├── index.html              # 蔵書一覧（トップ）
-├── assets/
-│   ├── style.css           # 共通スタイル
-│   └── reader.js           # 対訳リーダー（表示切替・文字サイズ）
-└── works/
-    └── henshin/
-        ├── index.html      # 『変身』読書ページ
-        └── data.js         # 対訳データ（window.BOOK）
+├── style.css                # 共通スタイル
+├── reader.js                # 対訳リーダー（表示切替・文字サイズ・保存）
+├── henshin.html             # 『変身』読書ページ
+├── henshin-data.js          # 『変身』の対訳データ（window.BOOK）
+├── hour.html                # 『一時間の物語』読書ページ
+├── hour-data.js             # 『一時間の物語』の対訳データ
+└── index.html               # 蔵書一覧（トップ）
 ```
 
 ## ローカルで見る
@@ -32,7 +37,8 @@ taiyaku-bunko/
 - 日本語訳は本サイトのために新しく作成（AIの支援により翻訳）。自由に閲覧できます。
 
 ## 作品を追加するには
-1. `works/<作品名>/` フォルダを作る。
-2. 対訳データを `data.js` として置く（`window.BOOK = { title, author, ..., parts:[{label, paras:[{ja,en}]}] }`）。
-3. `works/<作品名>/index.html` を『変身』のページを雛形にして作る。
+1. `<作品ID>.html` を既存の読書ページを雛形として作る。
+2. 対訳データを `<作品ID>-data.js` として置く（`window.BOOK = { id, title, author, ..., parts:[{label, paras:[{ja,en}]}] }`）。
+3. 読書ページ末尾で、対応する `<作品ID>-data.js` と `reader.js` をこの順に読み込む。
 4. トップ `index.html` の `.shelf` にカードを1枚追加する。
+5. `sitemap.xml` に作品ページを追加し、`候補作品リスト.md` の「公開済み」を更新する。
